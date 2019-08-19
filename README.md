@@ -1,12 +1,12 @@
-# Stacker React
+## Stacker React
 Stacker game programmed using React.
 
-# About
+## About
 Used this as an opportunity to learn some web development and React, but at the same time taking advantage of my interest in developing games.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# Key Learnings
+## Key Learnings
 * React
 * ReactDOM
 
