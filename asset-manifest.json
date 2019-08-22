@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/StackerReact/static/css/main.41a649f1.chunk.css",
+    "main.css": "/StackerReact/static/css/main.f1a6b94e.chunk.css",
     "main.js": "/StackerReact/static/js/main.c9e12088.chunk.js",
     "main.js.map": "/StackerReact/static/js/main.c9e12088.chunk.js.map",
     "runtime~main.js": "/StackerReact/static/js/runtime~main.31d1826b.js",
@@ -8,8 +8,8 @@
     "static/js/2.93059158.chunk.js": "/StackerReact/static/js/2.93059158.chunk.js",
     "static/js/2.93059158.chunk.js.map": "/StackerReact/static/js/2.93059158.chunk.js.map",
     "index.html": "/StackerReact/index.html",
-    "precache-manifest.da0a773bad4431219a0d4605bac80216.js": "/StackerReact/precache-manifest.da0a773bad4431219a0d4605bac80216.js",
+    "precache-manifest.2ab03d8fb7ce918cd79f100fdafff8d2.js": "/StackerReact/precache-manifest.2ab03d8fb7ce918cd79f100fdafff8d2.js",
     "service-worker.js": "/StackerReact/service-worker.js",
-    "static/css/main.41a649f1.chunk.css.map": "/StackerReact/static/css/main.41a649f1.chunk.css.map"
+    "static/css/main.f1a6b94e.chunk.css.map": "/StackerReact/static/css/main.f1a6b94e.chunk.css.map"
   }
 }
