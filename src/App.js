@@ -36,6 +36,7 @@ class App extends React.Component {
         this.distance = this.cellScale;
 
         this.update = this.update.bind(this);
+        this.handleTouch = this.handleTouch.bind(this);
         this.messageBlink = this.messageBlink.bind(this);
     }
 
@@ -71,29 +72,49 @@ class App extends React.Component {
     handleKeyDown = event => {
         // IF SPACE key is pressed and game is not over
         if (event.key === ' ' && !this.state.gameOver) {
-            this.checkBoard();
-
-            // IF the game is not over (game state may have changed in checkBoard)
-            if (!this.state.gameOver) {
-                // IF y position has reached 2/3 of the board
-                if (this.state.yPos / this.cellScale === Math.floor(((this.state.board.length - 1)) / 3)) {
-                    this.newTimer(2, 85);   // INCREASE speed
-                }
-                // IF y position has reached 1/3 of the board
-                else if (this.state.yPos / this.cellScale === Math.floor((2 * (this.state.board.length - 1)) / 3)) {
-                    this.newTimer(3, 100);  // INCREASE speed
-                }
-
-                this.createNewBlocks();
-            }
+            this.layDownBlock();
         }
-        else {
-            // IF R key is pressed and game is not over
-            if (event.key === 'r') {
-                this.reset();
-            }
+        // IF R key is pressed and game is over
+        else if (event.key === 'r' && this.state.gameOver) {
+            this.reset();
         }
     };
+
+    /**
+     * Handles touch presses
+     *
+     * @returns {Promise<void>}
+     */
+    handleTouch = async () => {
+        if (!this.state.gameOver) {
+            await this.layDownBlock();
+        } else {
+            this.reset();
+        }
+    };
+
+    /**
+     * Checks board to lay block down, checks to see if timer should be sped up, and adds new blocks
+     * 
+     * @returns {Promise<void>}
+     */
+    async layDownBlock() {
+        await this.checkBoard();
+
+        // IF the game is not over (game state may have changed in checkBoard)
+        if (!this.state.gameOver) {
+            // IF y position has reached 2/3 of the board
+            if (this.state.yPos / this.cellScale === Math.floor(((this.state.board.length - 1)) / 3)) {
+                this.newTimer(2, 85);   // INCREASE speed
+            }
+            // IF y position has reached 1/3 of the board
+            else if (this.state.yPos / this.cellScale === Math.floor((2 * (this.state.board.length - 1)) / 3)) {
+                this.newTimer(3, 100);  // INCREASE speed
+            }
+
+            this.createNewBlocks();
+        }
+    }
 
     /**
      * Checks below active blocks
@@ -104,7 +125,8 @@ class App extends React.Component {
      *  ELSE:
      *      UPDATE BOARD
      */
-    checkBoard() {
+    async checkBoard() {
+        console.log(this.state.yPos);
         let board = this.state.board.slice();
 
         // FOREACH active block
@@ -121,7 +143,7 @@ class App extends React.Component {
                     board[y / this.cellScale][x / this.cellScale] = 1;
                 } else {
                     this.state.activeBlocks.splice(i, 1);   // REMOVE block from active blocks
-                    this.setState({
+                    await this.setState({
                         blocksToSpawn: this.state.blocksToSpawn - 1,  // DECREMENT blocks to spawn
                     }, function () {
                         this.setState({
@@ -135,7 +157,7 @@ class App extends React.Component {
             }
         }
 
-        this.setState({
+        await this.setState({
             yPos: this.state.yPos - this.cellScale, // SET new y position
             board: board,
             inactiveBlocks:
@@ -151,6 +173,7 @@ class App extends React.Component {
         });
 
         this.distance = this.cellScale;
+        console.log(this.state.yPos);
     }
 
     /**
@@ -336,10 +359,11 @@ class App extends React.Component {
                     height={this.height}
                     id='canvas'
                     className="canvas"
-                    onClick={this.handleKeyDown}
+                    onKeyDown={this.handleKeyDown}
+                    onClick={this.handleTouch}
                 >
                 </svg>
-                <h2>{this.state.gameOver ? "PRESS 'R' TO PLAY AGAIN" : "PRESS 'SPACE' TO SET BLOCKS" }</h2>
+                <h2>{this.state.gameOver ? "PRESS 'R' TO PLAY AGAIN" : "PRESS 'SPACE' TO SET BLOCKS"}</h2>
             </div>
         );
     }
