@@ -1,6 +1,9 @@
 ## Stacker React
 Stacker game programmed using React.
 
+## Play it!
+[Stacker React](https://g-reg26.github.io/StackerReact/)
+
 ## About
 Used this as an opportunity to learn some web development and React, but at the same time taking advantage of my interest in developing games.
 
