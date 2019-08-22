@@ -35,6 +35,9 @@ class App extends React.Component {
         this.cellScale = 50;
         this.distance = this.cellScale;
 
+        this.spacePressed = false;
+        this.rPressed = false;
+
         this.update = this.update.bind(this);
         this.handleTouch = this.handleTouch.bind(this);
         this.messageBlink = this.messageBlink.bind(this);
@@ -54,7 +57,8 @@ class App extends React.Component {
             blocksToSpawn: 3,
         }, () => this.createNewBlocks());
 
-        document.addEventListener("keydown", (evt => this.handleKeyDown(evt)));
+        document.addEventListener("keypress", (evt => this.handleKeyPressed(evt)));
+        document.addEventListener("keyup", (evt => this.handleKeyRelease(evt)));
     }
 
     /**
@@ -69,14 +73,27 @@ class App extends React.Component {
      *
      * @param event used to access which key has been pressed
      */
-    handleKeyDown = event => {
+    handleKeyPressed = event => {
+            // IF SPACE key is pressed and game is not over
+            if (event.key === ' ' && !this.spacePressed && !this.state.gameOver) {
+                this.spacePressed = true;
+                this.layDownBlock();
+            }
+            // IF R key is pressed and game is over
+            else if (event.key === 'r' && !this.rPressed && this.state.gameOver) {
+                this.rPressed = true;
+                this.reset();
+            }
+    };
+
+    handleKeyRelease = event => {
         // IF SPACE key is pressed and game is not over
-        if (event.key === ' ' && !this.state.gameOver) {
-            this.layDownBlock();
+        if (event.key === ' ') {
+            this.spacePressed = false;
         }
         // IF R key is pressed and game is over
-        else if (event.key === 'r' && this.state.gameOver) {
-            this.reset();
+        else if (event.key === 'r') {
+            this.rPressed = false;
         }
     };
 
@@ -95,7 +112,7 @@ class App extends React.Component {
 
     /**
      * Checks board to lay block down, checks to see if timer should be sped up, and adds new blocks
-     * 
+     *
      * @returns {Promise<void>}
      */
     async layDownBlock() {
@@ -359,8 +376,9 @@ class App extends React.Component {
                     height={this.height}
                     id='canvas'
                     className="canvas"
-                    onKeyDown={this.handleKeyDown}
-                    onClick={this.handleTouch}
+                    onKeyPress={this.handleKeyPressed}
+                    onKeyUp={this.handleKeyRelease}
+                    onTouchStart={this.handleTouch}
                 >
                 </svg>
                 <h2>{this.state.gameOver ? "PRESS 'R' TO PLAY AGAIN" : "PRESS 'SPACE' TO SET BLOCKS"}</h2>
